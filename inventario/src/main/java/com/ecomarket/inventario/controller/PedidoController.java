@@ -8,15 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedidos")
+@RequestMapping("/api/pedidos")
 public class PedidoController {
 
-    private final PedidoService pedidoService;
-
     @Autowired
-    public PedidoController(PedidoService pedidoService) {
-        this.pedidoService = pedidoService;
-    }
+    private PedidoService pedidoService;
 
     @GetMapping
     public List<Pedido> getAllPedidos() {
@@ -26,6 +22,24 @@ public class PedidoController {
     @GetMapping("/{id}")
     public Pedido getPedidoById(@PathVariable Long id) {
         return pedidoService.findById(id);
+    }
+
+    @PatchMapping("/{id}")
+    public Pedido partialUpdatePedido(@PathVariable Long id, @RequestBody Pedido pedido) {
+        Pedido existingPedido = pedidoService.findById(id);
+        if (existingPedido != null) {
+            if (pedido.getProductos() != null) {
+                existingPedido.setProductos(pedido.getProductos());
+            }
+            if (pedido.getEstado() != null) {
+                existingPedido.setEstado(pedido.getEstado());
+            }
+            if (pedido.getProductos() != null) {
+                existingPedido.setProductos(pedido.getProductos());
+            }
+            return pedidoService.save(existingPedido);
+        }
+        return null;
     }
 
     @PostMapping

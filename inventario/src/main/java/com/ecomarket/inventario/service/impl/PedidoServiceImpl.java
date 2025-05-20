@@ -5,10 +5,12 @@ import com.ecomarket.inventario.repository.PedidoRepository;
 import com.ecomarket.inventario.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class PedidoServiceImpl implements PedidoService {
 
     private final PedidoRepository pedidoRepository;
